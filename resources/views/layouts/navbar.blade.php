@@ -12,8 +12,12 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ route('admin.vehicles.index') }}">Vehículos</a>
         </li>
-        @if (Auth::user()->role == 'becario')
+        @if (Auth::user()->rol == 'cliente')
         <li class="nav-item me-5"><a class="nav-link active" aria-current="page" href="{{ route('client.requests.create') }}">Comprar vehículo</a></li>
+        <li class="nav-item me-5"><a class="nav-link active" aria-current="page" href="{{ route('client.requests.index') }}">Mis compras</a></li>
+        @endif
+        @if (Auth::user()->rol == 'becario')
+        <li class="nav-item me-5"><a class="nav-link active" aria-current="page" href="{{ route('client.requests.index') }}">Solicitudes</a></li>
         @endif
       </ul>
       <form class="d-flex" role="search">

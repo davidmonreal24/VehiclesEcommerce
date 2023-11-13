@@ -14,7 +14,7 @@
 
 <h3>Crear solicitud de compra</h3>
 
-<form action="{{ route('client.requests.store') }}" method="POST" class="form-group">
+<form method="POST" action="{{ route('client.requests.store') }}" class="form-group">
   @csrf
   <label for="id_vehicle">Seleccionar Vehículo:</label>
   <select name="id_vehicle" id="id_vehicle" required>
@@ -23,7 +23,7 @@
     @endforeach
   </select>
   <label for="id_user">Usuario:</label>
-  <input type="text" name="id_user" id="id_user" value="{{ Auth::user()->id }}" readonly>
+  <input type="text" name="id_user" id="id_user" value="{{ Auth::user()->name }}" readonly>
   <label for="estado">Estatus:</label>
   <input type="text" name="estado" id="estado" value="{{ $clientRequest->estado }}" readonly>
 

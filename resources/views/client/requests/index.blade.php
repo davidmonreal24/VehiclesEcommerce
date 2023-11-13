@@ -7,33 +7,34 @@
 </div>
 @endif
 
-<h3>Lista de Solicitudes</h3>
+<h3>Lista de solicitudes</h3>
 
-<table>
-    <tr>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Vehículo</th>
-        <th>Mensaje</th>
-        <th>Acciones</th>
-    </tr>
+<div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach($requests as $request)
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+            @foreach($vehicles as $vehicle)
+                <!-- Asegúrate de ajustar la lógica según tus necesidades -->
+                @if($vehicle->id == $request->id_vehicle)
+                    <img src="{{ asset('storage/modelos3d/' . $vehicle->modelo3d) }}" alt="Modelo 3D" width="300px" height="200px">
+                @endif
+            @endforeach
+                <p class="card-text">Estado: {{ $request->estado }}</p>
 
-    <tr>
-        <td>{{ $request->name }}</td>
-        <td>{{ $request->email }}</td>
-        <td>{{ $request->nombre }}</td>
-        <td>{{ $request->mensaje }}</td>
-        <td>
-            <a href="{{ route('admin.requests.edit', $request->id) }}">Editar</a>
-            <form method="POST" action="{{ route('admin.requests.destroy', $request->id) }}">
-                @csrf
-                @method('DELETE')
-                <button type="submit">Eliminar</button>
-            </form>
-        </td>
-    </tr>
-
+                @if(auth()->user()->rol != 'admin')
+                <a href="{{ route('client.requests.edit', $request->id) }}" class="btn btn-primary">Editar</a>
+                @if(auth()->user()->rol != 'becario')
+                <form method="POST" action="{{ route('client.requests.destroy', $request->id) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+                @endif
+                @endif
+            </div>
+        </div>
+    </div>
     @endforeach
-</table>
+</div>
 @endsection

@@ -28,9 +28,9 @@ class Vehicle extends Model
         'estado'
     ];
 
-    public function Requests()
+    public function RequestPurchases()
     {
-        return $this->hasMany(Request::class, 'id_vehicle');
+        return $this->hasMany(RequestPurchase::class, 'id_vehicle');
     }
 
     public function scopeSearch($query, $search)

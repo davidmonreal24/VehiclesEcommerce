@@ -6,8 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class RequestPurchase extends Model
-{
+{ 
     use HasFactory;
+
+    static $rules = [
+        'id_user' => 'required',
+        'id_vehicle' => 'required',
+        'estado' => 'required'
+    ];
     protected $fillable = [
         'id_user',
         'id_vehicle',
@@ -23,5 +29,7 @@ class RequestPurchase extends Model
     {
         return $this->belongsTo(Vehicle::class);
     }
+    protected $table = 'request_purchases';
 
+    
 }

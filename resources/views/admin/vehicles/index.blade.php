@@ -24,7 +24,7 @@
                 
 
 
-                @if(auth()->user()->rol == 'becario')
+                @if(auth()->user()->rol != 'cliente')
                 <a href="{{ route('admin.vehicles.edit', $vehicle->id) }}" class="btn btn-primary">Editar</a>
                 <form method="POST" action="{{ route('admin.vehicles.destroy', $vehicle->id) }}">
                     @csrf

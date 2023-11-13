@@ -56,3 +56,4 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/client/requests/update/{clientRequest}', [ClientController::class, 'update'])->name('client.requests.update');
     Route::delete('/client/requests/destroy/{id}', [ClientController::class, 'destroy'])->name('client.requests.destroy');
 });
+// Route::resource('client.requests', ClientController::class);

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('request_purchases', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_user')->references('id')->on('users');
+            $table->foreignId('id_vehicle')->references('id')->on('vehicles');
+            $table->string('estado')->default('pendiente');
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@ class AdminController extends Controller
     public function downloadMostSoldPDF()
     {
         // Obtener los vehículos más vendidos basados en la cantidad de solicitudes
-        $mostSoldVehicles = Vehicle::withCount('Requests')
+        $mostSoldVehicles = Vehicle::withCount('RequestPurchases')
             ->orderBy('estado', 'desc')
             ->take(10)
             ->get();
@@ -31,7 +31,7 @@ class AdminController extends Controller
 
     public function downloadAllSoldPDF()
     {
-        $soldVehicles = Vehicle::has('Requests')->get();
+        $soldVehicles = Vehicle::has('RequestPurchases')->get();
 
         // Generar el PDF
         $pdf = PDF::loadView('admin.vehicles.pdf-all-sold', compact('soldVehicles'));
