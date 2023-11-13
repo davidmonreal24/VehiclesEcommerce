@@ -47,6 +47,7 @@ class AdminController extends Controller
     public function index()
     {
         $vehicles = Vehicle::orderBy('id', 'desc')->paginate(5);
+        // dd($vehicles);
         return view('admin.vehicles.index', compact('vehicles'));
     }
 
@@ -71,14 +72,19 @@ class AdminController extends Controller
 
         // Lógica para almacenar el archivo
         if ($request->hasFile('modelo3d')) {
-            $file = $request->file('modelo3d');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('modelos3d'), $fileName); // Guarda el archivo en la carpeta 'modelos3d' en la carpeta pública
+            $fileName = $request->file('modelo3d')->store('modelos3d', 'public');
         }
+        
 
         // Ahora puedes crear el vehículo con el nombre y el nombre del archivo de modelo 3D
         $vehicle = new Vehicle();
         $vehicle->nombre = $request->nombre;
+        $vehicle->tipo = $request->tipo;
+        $vehicle->capacidad = $request->capacidad;
+        $vehicle->color = $request->color;
+        $vehicle->precio = $request->precio;
+        $vehicle->estado = $request->estado;
+
         // Otros campos del vehículo
         $vehicle->modelo3d = $fileName; // Guarda el nombre del archivo en la base de datos
 
