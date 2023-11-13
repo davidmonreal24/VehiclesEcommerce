@@ -9,49 +9,34 @@
 
 <h3>Lista de Vehículos</h3>
 
-<table>
-    <tr>
-        <th>Nombre</th>
-        <th>Tipo</th>
-        <th>Capacidad</th>
-        <th>Color</th>
-        <th>Precio</th>
-        <th>Estado</th>
-        <th>Modelo 3D</th>
-        @if(auth()->user()->rol == 'admin')
-        <th>Acciones</th>
-        @endif
-    </tr>
+<div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach($vehicles as $vehicle)
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+            <img src="{{ asset('storage/modelos3d/' . $vehicle->modelo3d) }}" alt="Modelo 3D" width="300px" height="200px">
+                <h5 class="card-title">{{ $vehicle->nombre }}</h5>
+                <p class="card-text">Tipo: {{ $vehicle->tipo }}</p>
+                <p class="card-text">Capacidad: {{ $vehicle->capacidad }}</p>
+                <p class="card-text">Color: {{ $vehicle->color }}</p>
+                <p class="card-text">Precio: {{ $vehicle->precio }}</p>
+                <p class="card-text">Estado: {{ $vehicle->estado }}</p>
+                
 
-    <tr>
-        <td>{{ $vehicle->nombre }}</td>
-        <td>{{ $vehicle->tipo }}</td>
-        <td>{{ $vehicle->capacidad }}</td>
-        <td>{{ $vehicle->color }}</td>
-        <td>{{ $vehicle->precio }}</td>
-        <td>{{ $vehicle->estado }}</td>
-        <!-- <td>
-            <img src="{{ asset('storage/modelos3d/' . $vehicle->modelo3d) }}" alt="Modelo 3D">
-        </td> -->
 
-        @if(auth()->user()->rol == 'admin')
-        <td>
-            <a href="{{ route('admin.vehicles.edit', $vehicle->id) }}">Editar</a>
-            <form method="POST" action="{{ route('admin.vehicles.destroy', $vehicle->id) }}">
-                @csrf
-                @method('DELETE')
-                <button type="submit">Eliminar</button>
-            </form>
-        </td>
-        @endif
-    </tr>
-
+                @if(auth()->user()->rol == 'becario')
+                <a href="{{ route('admin.vehicles.edit', $vehicle->id) }}" class="btn btn-primary">Editar</a>
+                <form method="POST" action="{{ route('admin.vehicles.destroy', $vehicle->id) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+                @endif
+            </div>
+        </div>
+    </div>
     @endforeach
-</table>
+</div>
+
 {{ $vehicles->links() }}
 @endsection
-
-
-
-

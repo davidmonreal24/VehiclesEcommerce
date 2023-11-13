@@ -9,6 +9,7 @@ use Excel;
 use App\Exports\VehiclesExport;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 
 class AdminController extends Controller
@@ -46,7 +47,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        $vehicles = Vehicle::orderBy('id', 'desc')->paginate(5);
+        $vehicles = Vehicle::orderBy('id', 'desc')->paginate(10);
         // dd($vehicles);
         return view('admin.vehicles.index', compact('vehicles'));
     }
@@ -63,17 +64,11 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         // Valida tus campos aquí, incluyendo el campo del modelo 3D (puedes agregar reglas específicas para archivos)
-
-        $request->validate([
-            'nombre' => 'required',
-            // Otras reglas de validación
-            'modelo3d' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+        request()->validate(Vehicle::$rules);
 
         // Lógica para almacenar el archivo
-        if ($request->hasFile('modelo3d')) {
-            $fileName = $request->file('modelo3d')->store('modelos3d', 'public');
-        }
+        $nombre = $request->file('modelo3d')->getClientOriginalName();
+        $modelo3d = $request->file('modelo3d')->storeAs('modelos3d', $nombre, 'public');
         
 
         // Ahora puedes crear el vehículo con el nombre y el nombre del archivo de modelo 3D
@@ -86,7 +81,7 @@ class AdminController extends Controller
         $vehicle->estado = $request->estado;
 
         // Otros campos del vehículo
-        $vehicle->modelo3d = $fileName; // Guarda el nombre del archivo en la base de datos
+        $vehicle->modelo3d = $nombre; // Guarda el nombre del archivo en la base de datos
 
         $vehicle->save();
 
@@ -101,18 +96,38 @@ class AdminController extends Controller
     }
 
     public function update(Request $request, Vehicle $vehicle)
-    {
-        $datosValidados = $request->validate(Vehicle::$rules);
+{
+    // Valida tus campos aquí, incluyendo el campo del modelo 3D
+    // $datosValidados = $request->validate([
+    //     'nombre' => 'required',
+    //     'modelo3d' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Puedes ajustar las reglas según tus necesidades
+    //     // Otras reglas de validación
+    // ]);
 
-        Log::info('Datos validados: ' . json_encode($vehicle->toArray()));
+    request()->validate(Vehicle::$rules);
 
-        $vehicle->update($datosValidados);
-
-        Log::info('Datos después de la actualización: ' . json_encode($vehicle->toArray()));
-
-        // dd($request->all());
-        return redirect()->route('admin.vehicles.index')->with('success', 'Vehículo actualizado exitosamente.');
+    // Lógica para actualizar el archivo si se proporciona uno nuevo
+    if ($request->hasFile('modelo3d')) {
+        $fileName = $request->file('modelo3d')->getClientOriginalName();
+        $modelo3d = $request->file('modelo3d')->storeAs('modelos3d', $fileName, 'public');
+    }else{
+        $fileName = $vehicle->modelo3d;
     }
+
+    $vehicle->nombre = $request->nombre;
+    $vehicle->tipo = $request->tipo;
+    $vehicle->capacidad = $request->capacidad;
+    $vehicle->color = $request->color;
+    $vehicle->precio = $request->precio;
+    $vehicle->estado = $request->estado;
+    $vehicle->modelo3d = $fileName;
+
+    // Actualiza los datos del vehículo
+    $vehicle->update();
+
+    return redirect()->route('admin.vehicles.index')->with('success', 'Vehículo actualizado exitosamente.');
+}
+
 
     public function destroy($id)
     {

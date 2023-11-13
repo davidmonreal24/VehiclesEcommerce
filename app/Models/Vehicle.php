@@ -15,7 +15,8 @@ class Vehicle extends Model
         'capacidad' => 'required',
         'color' => 'required',
         'precio' => 'required',
-        'estado' => 'required'
+        'estado' => 'required',
+        'modelo3d' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
     ];
     protected $fillable = [
         'nombre',

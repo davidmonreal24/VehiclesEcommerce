@@ -36,6 +36,9 @@
     <label for="estado">Estatus:</label>
     <input type="text" name="estado" id="estado" value="{{ $vehicle->estado }}" required>
 
+    <label for="modelo3d" class="form-label">Modelo 3D:</label>
+    <input type="file" name="modelo3d" id="modelo3d" accept="image/*" required>
+
     <button type="submit">Actualizar</button>
 
     <a href="{{ route('admin.vehicles.create') }}">Cancelar</a>

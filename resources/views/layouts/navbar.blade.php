@@ -12,7 +12,9 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ route('admin.vehicles.index') }}">Vehículos</a>
         </li>
+        @if (Auth::user()->role == 'becario')
         <li class="nav-item me-5"><a class="nav-link active" aria-current="page" href="{{ route('client.requests.create') }}">Comprar vehículo</a></li>
+        @endif
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
